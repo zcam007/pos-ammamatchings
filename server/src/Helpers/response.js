@@ -9,10 +9,10 @@ exports.success = (res, result) => {
     res.json(form);
 }
 
-exports.error = (res, message) =>{
+exports.error = (res, result) =>{
     let form = {
         status: 400,
-        message
+        result
     };
 
     res.json(form);

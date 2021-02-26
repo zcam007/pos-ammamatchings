@@ -4,7 +4,7 @@ const response = require('../Helpers/response'),
 
 exports.validateUser = (req, res, next) => {
     let token = req.headers['authorization'];
-    if(!token) return res.status(401).json({status:401, message: "Unauthorized"});
+    if(!token) return res.status(401).json({status:401, result: {message:"Unauthorized"}});
     token = token.replace('Bearer ', '');
     jwt.verify(token, secretKey, (err, decoded) => {
         if (err) {

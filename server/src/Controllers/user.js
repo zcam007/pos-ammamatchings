@@ -9,21 +9,21 @@ const model = require("../Models/user"),
 
 exports.registerUser = (req, res) => {
   if (req.body.username === null || req.body.username === "")
-    return response.error(res, "Username can't be empty");
+    return response.error(res, {"message":"Username can't be empty"});
   if (!isUsernameValid(req.body.username))
     return response.error(
       res,
-      "username cannot contain special character except underscore ( _ ) and minimal 6 digits"
+      {"message":"username cannot contain special character except underscore ( _ ) and minimal 6 digits"}
     );
   if (req.body.password === null || req.body.password === "")
-    return response.error(res, "Password can't be empty");
+    return response.error(res, {"message":"Password can't be empty"});
   if (!isPasswordValid(req.body.password))
     return response.error(
       res,
-      "Password must have lower case, upper case, number, and minimal 8 digits"
+      {"message":"Password must have lower case, upper case, number, and minimal 8 digits"}
     );
   if (req.body.user_role === null || req.body.user_role === "")
-    return response.error(res, "User role can't be empty");
+    return response.error(res, {"message":"User role can't be empty"});
 
   model
     .getUserByName(req)
@@ -31,12 +31,12 @@ exports.registerUser = (req, res) => {
       if (result.length != 0)
         response.error(
           res,
-          "Username has been taken, please change your username"
+          {"message":"Username has been taken, please change your username"}
         );
       model
         .registerUser(req)
         .then((result) => {
-          response.success(res, "User created successfully");
+          response.success(res, {"message":"User created successfully"});
         })
         .catch((err) => {
           response.error(res, err);
@@ -57,18 +57,18 @@ const isUsernameValid = (username) => {
 
 exports.loginUser = (req, res) => {
   if (req.body.username == null || req.body.username === "")
-    return response.error(res, "Username can't be empty");
+    return response.error(res, {"message":"Username can't be empty"});
   if (!isUsernameValid(req.body.username))
     return response.error(
       res,
-      "username cannot contain special character except underscore ( _ ) and minimal 6 digits"
+      {"message":"username cannot contain special character except underscore ( _ ) and minimal 6 digits"}
     );
   if (req.body.password == null || req.body.password === "")
-    return response.error(res, "Password can't be empty");
+    return response.error(res, {"message":"Password can't be empty"});
   if (!isPasswordValid(req.body.password))
     return response.error(
       res,
-      "Password must have lower case, upper case, number, and minimal 8 digits"
+      {"message":"Password must have lower case, upper case, number, and minimal 8 digits"}
     );
 
   model.loginUser(req).then((result) => {
@@ -91,10 +91,10 @@ exports.loginUser = (req, res) => {
           token: token,
         });
       } else {
-        response.error(res, "Password incorrect");
+        response.error(res, {"message":"Password incorrect"});
       }
     } else {
-      response.error(res, "User not found");
+      response.error(res, {"message":"User not found"});
     }
   });
 };
@@ -103,12 +103,12 @@ exports.updateUser = (req, res) => {
   model
     .getUserById(req)
     .then((result) => {
-      if (result.length == 0) return response.error(res, "User not found");
+      if (result.length == 0) return response.error(res, {"message":"User not found"});
 
       model
         .updateUser(req)
         .then((result) => {
-          response.success(res, "Updated user successfully");
+          response.success(res, {"message":"Updated user successfully"});
         })
         .catch((err) => {
           response.error(res, err);
@@ -129,7 +129,7 @@ exports.getUserById = (req, res) => {
   model
     .getUserById(req)
     .then((result) => {
-      response.success(res, result);
+      response.success(res, result[0]);
     })
     .catch((err) => response.error(res, err));
 };
@@ -138,7 +138,7 @@ exports.deleteUser = (req, res) => {
   model
     .deleteUser(req)
     .then((result) => {
-      response.success(res, "Deleted user successfully");
+      response.success(res, {"message":"User deleted successfully"});
     })
     .catch((err) => result.error(res, err));
 };
