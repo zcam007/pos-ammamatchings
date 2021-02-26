@@ -2,6 +2,7 @@
 
 const express = require('express'),
     user = require('./user'),
+    category = require('./category'),
     {validateUser} = require('../Helpers/middleware');
 
 const Router = express.Router();
@@ -19,6 +20,7 @@ Router.get('/', (req, res) => {
 
 
 Router.use('/user', user);
+Router.use('/category', validateUser, category);
 
 
 
