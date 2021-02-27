@@ -29,7 +29,7 @@ exports.registerUser = (req, res) => {
     .getUserByName(req)
     .then((result) => {
       if (result.length != 0)
-        response.error(
+        return response.error(
           res,
           {"message":"Username has been taken, please change your username"}
         );
@@ -44,6 +44,19 @@ exports.registerUser = (req, res) => {
     })
     .catch((err) => response.error(res, err));
 };
+
+const updateValidations =(req,res)=>{
+  if (req.body.password === null || req.body.password === "")
+    return response.error(res, {"message":"Password can't be empty"});
+  if (!isPasswordValid(req.body.password))
+    return response.error(
+      res,
+      {"message":"Password must have lower case, upper case, number, and minimal 8 digits"}
+    );
+  if (req.body.user_role === null || req.body.user_role === "")
+    return response.error(res, {"message":"User role can't be empty"});
+
+}
 
 const isPasswordValid = (password) => {
   const tester = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
@@ -104,7 +117,7 @@ exports.updateUser = (req, res) => {
     .getUserById(req)
     .then((result) => {
       if (result.length == 0) return response.error(res, {"message":"User not found"});
-
+      updateValidations(req,res)
       model
         .updateUser(req)
         .then((result) => {
@@ -129,6 +142,7 @@ exports.getUserById = (req, res) => {
   model
     .getUserById(req)
     .then((result) => {
+      if (result.length == 0) return response.error(res, {"message":"User not found"});  
       response.success(res, result[0]);
     })
     .catch((err) => response.error(res, err));
@@ -142,3 +156,5 @@ exports.deleteUser = (req, res) => {
     })
     .catch((err) => result.error(res, err));
 };
+
+

@@ -56,7 +56,7 @@ exports.updateCategory = (req, res) => {
   if (req.params.category_id == "1")
     return response.error(
       res,
-      "I'm Sorry you cannot edit Uncategorized category"
+      "I'm Sorry you cannot edit 'Uncategorized' category"
     );
 
   model

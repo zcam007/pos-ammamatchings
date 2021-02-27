@@ -6,7 +6,8 @@ const express = require('express'),
 
 const Router = express();
 
-Router.get('/', controller.getUserList);
+Router.get('/logout',validateUser, controller.logoutUser);
+Router.get('/all', controller.getUserList);
 Router.post('/register', controller.registerUser);
 Router.post('/login', controller.loginUser);
 Router.get('/:user_id', validateUser, controller.getUserById);

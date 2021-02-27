@@ -35,7 +35,7 @@ exports.updateUser = req => {
     const pass = bcrypt.hashSync(body.password, salt);
     return new Promise((resolve, reject) => {
         
-        conn.query(`UPDATE tb_users SET username = ?, password = ?, role = ? WHERE id = ?`, [req.body.username, pass, req.body.user_role, req.params.user_id], (err, result) => {
+        conn.query(`UPDATE tb_users SET password = ?, role = ? WHERE id = ?`, [pass, req.body.user_role, req.params.user_id], (err, result) => {
             if(!err) resolve(result);
             else reject(err);
         });

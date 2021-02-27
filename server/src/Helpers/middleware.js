@@ -10,6 +10,7 @@ exports.validateUser = (req, res, next) => {
         if (err) {
             response.error(res, "Invalid token");
         } else {
+            req.body.token = token;
             req.body.user_id = decoded.id;
             req.body.username = decoded.username;
             next();
