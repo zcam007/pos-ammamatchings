@@ -157,4 +157,8 @@ exports.deleteUser = (req, res) => {
     .catch((err) => result.error(res, err));
 };
 
+exports.logoutUser = (req, res) => {
+response.success(res,{"message":"Logged out succesfully"})
+
+}
 
