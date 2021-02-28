@@ -32,12 +32,11 @@ exports.getCategories = (req, page) => {
 exports.getCategoryById = (req, id) => {
   return new Promise((resolve, reject) => {
     const categoryId = req.params.category_id || req.body.category_id || id;
-
     conn.query(
       "SELECT * FROM tb_categories WHERE id = ?",
       [categoryId],
       (err, result) => {
-        if (!err) resolve(result[0]);
+        if (!err) resolve(result);
         else reject(err);
       }
     );

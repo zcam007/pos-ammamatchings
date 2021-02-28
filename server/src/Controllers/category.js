@@ -20,7 +20,7 @@ exports.getCategoryById = (req, res) => {
   model
     .getCategoryById(req)
     .then(result => {
-      if (result.length != 0) response.success(res, result);
+      if (result.length != 0) response.success(res, result[0]);
       else response.error(res, {"message":"Category id not found"});
     })
     .catch(err => {
@@ -38,11 +38,11 @@ exports.newCategory = (req, res) => {
     model
       .newCategory(req)
       .then(resultNew => {
-        // response.success(res, {"message":"Category added successfully"});
-        model
-          .getCategoryById(req, resultNew.insertId)
-          .then(result => response.success(res, result))
-          .catch(err => response.error(res, err));
+        response.success(res, {"message":"Category added successfully"});
+      //   model
+      //     .getCategoryById(req, resultNew.insertId)
+      //     .then(result => response.success(res, result))
+      //     .catch(err => response.error(res, err));
       })
       .catch(err => {
         response.error(res, err);
@@ -106,7 +106,7 @@ exports.deleteCategory = (req, res) => {
               .then(result => {
                 response.success(res, {
                   message: "Category deleted successfully",
-                  id: req.params.category_id
+                  // id: req.params.category_id
                 });
               })
               .catch(err => {
@@ -117,7 +117,7 @@ exports.deleteCategory = (req, res) => {
       } else {
         response.error(res, {
           message: "Category id not found",
-          id: req.params.category_id
+          // id: req.params.category_id
         });
       }
     })
