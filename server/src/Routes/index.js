@@ -1,6 +1,7 @@
 'use-strict';
 
 const express = require('express'),
+    product = require('./product'),
     user = require('./user'),
     category = require('./category'),
     {validateUser} = require('../Helpers/middleware');
@@ -18,7 +19,7 @@ Router.get('/', (req, res) => {
     });
 })
 
-
+Router.use('/product', validateUser, product);
 Router.use('/user', user);
 Router.use('/category', validateUser, category);
 
