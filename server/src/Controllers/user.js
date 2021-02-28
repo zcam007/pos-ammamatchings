@@ -150,6 +150,11 @@ exports.getUserById = (req, res) => {
 
 exports.deleteUser = (req, res) => {
   model
+    .getUserById(req)
+    .then((result) => {
+      if (result.length == 0) return response.error(res, {"message":"User not found"});
+    })
+  model
     .deleteUser(req)
     .then((result) => {
       response.success(res, {"message":"User deleted successfully"});
