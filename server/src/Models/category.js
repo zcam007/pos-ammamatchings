@@ -45,10 +45,9 @@ exports.getCategoryById = (req, id) => {
 
 exports.getCategoryByName = req => {
   return new Promise((resolve, reject) => {
-    const categoryName = req.body.category_name || req.params.category_name;
-
+    const categoryName = req.body.category_name || req.params.category_name || req.name;
     conn.query(
-      "SELECT * FROM tb_categories WHERE name = ?",
+      "SELECT * FROM tb_categories WHERE name = ? and is_active = 1",
       [categoryName],
       (err, result) => {
           if(!err) resolve(result);
@@ -74,8 +73,8 @@ exports.newCategory = req => {
 exports.updateCategory = req => {
   return new Promise((resolve, reject) => {
     conn.query(
-      `UPDATE tb_categories SET name = ? WHERE id = ?`,
-      [req.body.category_name, req.params.category_id],
+      `UPDATE tb_categories SET name = ?, is_active =? WHERE id = ?`,
+      [req.body.category_name, req.body.is_active, req.params.category_id],
       (err, result) => {
         if (!err) resolve(result);
         else reject(result);

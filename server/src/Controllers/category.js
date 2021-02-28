@@ -58,17 +58,18 @@ exports.updateCategory = (req, res) => {
       res,
       "I'm Sorry you cannot edit 'Uncategorized' category"
     );
-
+    const {is_active}=req.body;
+    if(!is_active) return response.error(res,{ "message":"Please provide is_active parameter"});
   model
     .getCategoryById(req)
     .then(resultId => {
-      if (resultId.length === 0) response.error(res, {"message":"Category id not found"});
+      if (resultId.length === 0) return response.error(res, {"message":"Category id not found"});
       model.getCategoryByName(req).then(resultName => {
         if (
           resultName.length !== 0 &&
           resultName[0].id !== Number(req.params.category_id)
         )
-          return response.error(res, {"message":"Category name already exist"});
+          return response.error(res, {"message":"Category name already exists, and is in active state"});
         model
           .updateCategory(req)
           .then(resultUpdate => {
