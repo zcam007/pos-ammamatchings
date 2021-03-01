@@ -22,7 +22,7 @@ exports.getProductById = (req, res) => {
     .getProductById(req)
     .then(result => {
       if (result.length == 0) response.error(res, {"message":"Product id not found"});
-      else response.success(res, result);
+      else response.success(res, result[0]);
     })
     .catch(err => {
       response.error(res, err);
@@ -99,6 +99,7 @@ exports.updateProduct = (req, res) => {
   model
     .getProductById(req)
     .then(resultId => {
+      
       if (resultId.length === 0)
         return response.error(res, {"message":"Product not found"});
       model
@@ -118,7 +119,7 @@ exports.updateProduct = (req, res) => {
                 .then(result => {
                   model
                     .getProductById(req)
-                    .then(result => response.success(res, result))
+                    .then(result => response.success(res, result[0]))
                     .catch(err => response.error(res, err));
                 })
                 .catch(err => response.error(res, err));

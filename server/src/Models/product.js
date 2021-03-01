@@ -145,7 +145,7 @@ exports.updateProduct = req => {
   const body = req.body;
   return new Promise((resolve, reject) => {
     conn.query(
-      `UPDATE tb_products SET name = ?, description = ?, image = ?, category = ?, price = ?, quantity = ? WHERE id = ?`,
+      `UPDATE tb_products SET name = ?, description = ?, image = ?, category = ?, price = ?, quantity = ?, is_active =? WHERE id = ?`,
       [
         body.prod_name,
         body.prod_desc,
@@ -153,6 +153,7 @@ exports.updateProduct = req => {
         body.category_id,
         body.price,
         body.quantity,
+        req.body.is_active,
         req.params.prod_id
       ],
       (err, result) => {
