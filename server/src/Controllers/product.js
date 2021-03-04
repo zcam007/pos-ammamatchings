@@ -29,6 +29,18 @@ exports.getProductById = (req, res) => {
     });
 };
 
+exports.getProductByCategoryId = (req, res) => {
+  model
+    .getProductByCategoryId(req)
+    .then(result => {
+      if (result.length == 0) response.error(res, {"message":"Product id not found"});
+      else response.success(res, result[0]);
+    })
+    .catch(err => {
+      response.error(res, err);
+    });
+};
+
 exports.newProduct = (req, res) => {
   if (req.body.prod_name == null || req.body.prod_name == "")
     return response.error(res, {"message":"Product name can't be empty"});

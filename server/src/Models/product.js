@@ -41,11 +41,19 @@ const searchProduct = (req, sql) => {
   };
 };
 
+const selectByCategory=(req,sql)=>{
+  const category=req.query.category_id;
+  if (category!=null){
+    sql+= `AND category.id = ${category} `;
+  }
+  return sql;
+}
+
 exports.getProducts = (req, page) => {
   let sql = `SELECT product.id, product.name as product_name, product.description, product.image,
             category.name as category, product.price, product.quantity, product.created_at, product.updated_at,product.is_active FROM tb_products as product, 
             tb_categories as category WHERE product.category = category.id `;
-
+  sql = selectByCategory(req,sql)
   const query = searchProduct(req, sql);
   sql = sortBy(req, query.sql);
 
