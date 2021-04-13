@@ -89,7 +89,7 @@ exports.getProductById = (req, orderProdId) => {
   return new Promise((resolve, reject) => {
     const prodId = req.params.prod_id || orderProdId || req.body.prod_id;
     const sql = `SELECT product.id, product.name as product_name, product.description, product.image,
-        category.name as category, product.price, product.quantity, product.created_at, product.updated_at, product.is_active FROM tb_products as product, 
+        category.id as category, product.price, product.quantity, product.created_at, product.updated_at, product.is_active FROM tb_products as product, 
         tb_categories as category WHERE product.category = category.id AND product.id IN (?)`;
 
     conn.query(sql, [prodId], (err, result) => {
@@ -132,8 +132,9 @@ exports.newProduct = req => {
   const body = req.body;
   return new Promise((resolve, reject) => {
     conn.query(
-      `INSERT INTO tb_products SET name = ?, description = ?, image = ?, category = ?, price = ?, quantity = ?`,
+      `INSERT INTO tb_products SET id=?, name = ?, description = ?, image = ?, category = ?, price = ?, quantity = ?`,
       [
+        Math.floor(Math.random() * 899999999999 + 100000000000),
         body.prod_name,
         body.prod_desc,
         body.prod_image,

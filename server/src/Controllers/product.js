@@ -22,7 +22,19 @@ exports.getProductById = (req, res) => {
     .getProductById(req)
     .then(result => {
       if (result.length == 0) response.error(res, {"message":"Product id not found"});
-      else response.success(res, result[0]);
+      else {
+        getCategoryById(req,result[0].category)
+            .then(resultCategory => {
+              if (resultCategory.length === 0)
+                return response.error(res, {"message":"Category Id Not Found"});
+              else {
+                delete result[0]["category"]
+                result[0].category=resultCategory[0]
+                response.success(res, result[0])
+              }
+            })
+        // response.error(res, {"message":"Some error has occured"});
+      };
     })
     .catch(err => {
       response.error(res, err);

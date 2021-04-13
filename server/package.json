@@ -7,7 +7,7 @@
     "start": "nodemon server",
     "test": "nodemon server"
   },
-  "author": "Irsyaad Budi Prasetianto",
+  "author": "Chandu",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.0",
