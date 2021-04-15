@@ -44,9 +44,9 @@ exports.newOrder = async (req, res) => {
         {"message":`Quantity product id ${detailOrder[order].prod_id} not enough`}
       );
   }
-
+  let orderIdFromGenerator=orderGenerator();
   model
-    .newOrder(req, orderGenerator())
+    .newOrder(req, orderIdFromGenerator)
     .then(resultOrder => {
       let status = [];
       detailOrder.forEach(async item => {
@@ -55,10 +55,14 @@ exports.newOrder = async (req, res) => {
           .then(result => status.push(true))
           .catch(err => status.push(false));
       });
-
+      console.log(resultOrder)
       if (status.includes(false))
         return response.error(res, {"message":"Failed to create new order"});
-      else response.success(res, {"message":"Success create new order"});
+      else {
+        
+        response.success(res, {"message":"Success create new order","order_id":orderIdFromGenerator});
+      
+      }
     })
     .catch(err => {
       if (err.code == "ER_DUP_ENTRY") this.newOrder(req, res);

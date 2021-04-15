@@ -3,9 +3,37 @@
 const conn = require('../Configs/conn'),
     { getMaxPage } = require('./page');
 
-exports.getOrders = (req, page) => {
-    let sql = 'SELECT * FROM tb_orders';
+const sortBy = (req, sql) => {
+        const sortBy = req.query.sortby;
+        const orderBy = req.query.orderby;
+        const dateCreated=req.query.created_at;
+        const status=req.query.status;
+        if(dateCreated!=null){
+            if(status!=null)
+            sql+=`where created_at LIKE '${dateCreated}%' AND status='${status}' `;
+            else{
+                sql+=`where created_at LIKE '${dateCreated}%'`;
+            }
+        }
+        else if(status!=null){
+            sql+=`where status='${status}' `;
+        }
+        if (sortBy == "created") {
+          sql += `ORDER BY created_at `;
+        } 
+        if (sortBy != null) {
+          if (orderBy == "asc" || orderBy == null) {
+            sql += "ASC";
+          } else if ("desc") {
+            sql += "DESC";
+          }
+        }
+        return sql;
+      };
 
+exports.getOrders = (req, page) => {
+    let sql = 'SELECT * FROM tb_orders ';
+    sql = sortBy(req, sql);
     return new Promise((resolve, reject) => {
         getMaxPage(page, null, "tb_orders").then(maxPage => {
             const infoPage = {
@@ -95,7 +123,7 @@ exports.getOrderById = (req, order) => {
 
 exports.getDetailOrderById = orderId => {
     return new Promise((resolve, reject) => {
-        conn.query(`SELECT prod_id, quantity, sub_total FROM tb_orders_detail WHERE order_id = ?`, [orderId],
+        conn.query(`SELECT product.name, do.prod_id, do.quantity, do.sub_total FROM tb_orders_detail as do, tb_products as product WHERE do.order_id = ? AND do.prod_id=product.id`, [orderId],
             (err, result) => {
                 if (!err) resolve(result);
                 else reject(err);
