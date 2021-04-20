@@ -18,7 +18,7 @@ exports.getOrders = (req, res) => {
 };
 
 exports.newOrder = async (req, res) => {
-  console.log(req.body, "uye");
+  // console.log(req.body, "uye");
   if (req.body.admin_id == null)
     return response.error(res, {"message":"Admin id can't be empty"});
   if (req.body.total_price == null)
@@ -144,5 +144,5 @@ exports.updateStatusOrder = (req, res) => {
 };
 
 const orderGenerator = () => {
-  return Math.floor(Math.random() * 990000) + 10000;
+  return Math.floor(Math.random() * 990000) + 100000;
 };
