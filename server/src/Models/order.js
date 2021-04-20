@@ -55,11 +55,12 @@ exports.getOrders = (req, page) => {
 
 exports.newOrder = async (req, order) => {
     return new Promise((resolve, reject) => {
+            let price=parseFloat(req.body.total_price).toFixed(2);
         conn.query('INSERT INTO tb_orders SET admin_id = ?, order_id = ?, total_price = ?',
-            [req.body.admin_id, order, req.body.total_price],
+            [req.body.admin_id, order, price],
             (err, result) => {
                 if (!err) {
-                    const values = req.body.detail_order.map(item => [order, item.prod_id, item.quantity, item.sub_total]);
+                    const values = req.body.detail_order.map(item => [order, item.prod_id, item.quantity, parseFloat(item.sub_total).toFixed(2)]);
                     conn.query('INSERT INTO tb_orders_detail (order_id, prod_id, quantity, sub_total) VALUES ? ',
                         [values],
                         (err, result) => {

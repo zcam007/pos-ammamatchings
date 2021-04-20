@@ -130,6 +130,7 @@ exports.getProductByCategoryId = req => {
 
 exports.newProduct = req => {
   const body = req.body;
+  let price=parseFloat(body.price).toFixed(2);
   return new Promise((resolve, reject) => {
     conn.query(
       `INSERT INTO tb_products SET id=?, name = ?, description = ?, image = ?, category = ?, price = ?, quantity = ?`,
@@ -139,7 +140,7 @@ exports.newProduct = req => {
         body.prod_desc,
         body.prod_image,
         body.category_id,
-        body.price,
+        price,
         body.quantity
       ],
       (err, result) => {
@@ -152,6 +153,7 @@ exports.newProduct = req => {
 
 exports.updateProduct = req => {
   const body = req.body;
+  let price=parseFloat(body.price).toFixed(2);
   return new Promise((resolve, reject) => {
     conn.query(
       `UPDATE tb_products SET name = ?, description = ?, image = ?, category = ?, price = ?, quantity = ?, is_active =? WHERE id = ?`,
@@ -160,7 +162,7 @@ exports.updateProduct = req => {
         body.prod_desc,
         body.prod_image,
         body.category_id,
-        body.price,
+        price,
         body.quantity,
         req.body.is_active,
         req.params.prod_id
